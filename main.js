@@ -404,28 +404,55 @@ document.getElementById(55).style.backgroundColor = "red";
 function clickedDiv(coordinate){
 
     // Player1 === red background
-    let top;
-    let left;
+    
+    let left = "";
+    let top = "";
+    let right = "";
+    let bottom = "";
 
-    if((coordinate-20) >= 0){
-        top = document.getElementById(coordinate-20).style.backgroundColor;
-    } else {
-        top = "red";
-    }
-    if((coordinate-1) >= 0){
+    if ((coordinate-1) > 0){
         left = document.getElementById(coordinate-1).style.backgroundColor;
-    } else {
-        left = "red";
+    }
+    if((coordinate - 20) > 0){
+        top = document.getElementById(coordinate-20).style.backgroundColor;
+    }
+    if((coordinate + 1) < 399){
+        right = document.getElementById(coordinate+1).style.backgroundColor;
+    }
+    if((coordinate + 20) < 399){
+        bottom = document.getElementById(coordinate+20).style.backgroundColor;
     }
 
-    let right = document.getElementById(coordinate+1).style.backgroundColor;
-    let bottom = document.getElementById(coordinate+20).style.backgroundColor;
+    let valid = false;
+
+//TODO: transfer to switch:
+    if (coordinate <= 19){
+        if (left === "red" || right === "red" || bottom === "red"){
+            valid = true;
+        }//top row
+    }else if (coordinate >= 380){
+        if (left === "red" || right === "red" || top === "red"){
+            valid = true;
+        }//bottom row
+    }else if (coordinate === 20 || coordinate === 40 || coordinate === 60 || coordinate === 80 || coordinate === 100 || coordinate === 120 || coordinate === 140 || coordinate === 160 || coordinate === 180 || 200 || coordinate === 220 || coordinate === 240 || coordinate === 260 || coordinate === 280 || coordinate === 300 || coordinate === 320 || coordinate === 340 || coordinate === 360){
+        if(right === "red" || top === "red" || bottom === "red"){
+            valid = true;
+        } //left column
+    }else if( coordinate === 39 || coordinate === 59 || coordinate === 79 || coordinate === 99 || coordinate === 119 || coordinate === 139 || coordinate === 159 || coordinate === 179 || coordinate === 199 || coordinate === 219 || coordinate === 239 || coordinate === 259 || coordinate === 279 || coordinate === 299 || coordinate === 319 || coordinate === 339 || coordinate === 359 || coordinate === 379){
+        if (left === "red" || top === "red" || bottom === "red"){
+            valid = true;
+        }//right column
+    }else {
+        if(document.getElementById(coordinate-1).style.backgroundColor === "red" || document.getElementById(coordinate+1).style.backgroundColor === "red" || document.getElementById(coordinate-20).style.backgroundColor === "red" || document.getElementById(coordinate+20).style.backgroundColor === "red"){
+            valid = true;
+        }
+    }//in the field ***** RIGHT FIELD DOESN'T WORK
 
     if(document.getElementById(coordinate).style.backgroundColor === "red"){
         window.alert("This field is already yours!");
-    } else if(left === "red" || right === "red" || top === "red" || bottom === "red"){
+    } else if(valid === true){
         document.getElementById(coordinate).style.backgroundColor = "red";
-    } else {
+    } else{
         window.alert("You must attack a field in the direct neighborhood!");
     }
 
