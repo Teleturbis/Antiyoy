@@ -483,7 +483,7 @@ function clickedDiv(coordinate){
     } else if(valid === true){
         document.getElementById(coordinate).style.backgroundColor = "red";
     } else{
-        window.alert("You must attack a field in the direct neighborhood!");
+        window.alert("You must attack a field in your direct neighborhood!");
     }
 
 }
