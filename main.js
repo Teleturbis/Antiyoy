@@ -399,11 +399,28 @@ document.getElementById("397").onclick = function() { clickedDiv(397) };
 document.getElementById("398").onclick = function() { clickedDiv(398) };
 document.getElementById("399").onclick = function() { clickedDiv(399) };
 
-document.getElementById(55).style.backgroundColor = "red";
 
-function clickedDiv(coordinate){
+let startpositionOne = Math.floor(Math.random() * 399);
+let startpositionTwo = Math.floor(Math.random() * 399);
+
+document.getElementById(startpositionOne).style.backgroundColor = "red";
+document.getElementById(startpositionTwo).style.backgroundColor = "blue";
+
+function clickedDiv(coordinates) {
+
+    if(document.getElementById("turn").innerHTML == "Rot"){
+        playerRed(coordinates);
+    } else {
+        playerBlue(coordinates);
+    }
+    
+}
+
+function playerRed(coordinate){
 
     // Player1 === red background
+
+    let nextround = false;
     
     let left = "";
     let top = "";
@@ -424,23 +441,19 @@ function clickedDiv(coordinate){
         bottom = document.getElementById(coordinate+20).style.backgroundColor;
     }
 
-    console.log("case: " +caseCoordinate);
-
     let valid = false;
 
-    console.log("left: " +left + "| right: " + right + "| top: " + top + "| bottom: " + bottom)
-
-    if(coordinate === 20 || coordinate === 40 || coordinate === 60 || coordinate === 80 || coordinate === 100 || coordinate === 120 || coordinate === 140 || coordinate === 160 || coordinate === 180 || 200 || coordinate === 220 || coordinate === 240 || coordinate === 260 || coordinate === 280 || coordinate === 300 || coordinate === 320 || coordinate === 340 || coordinate === 360){
+    if(coordinate === 20 || coordinate === 40 || coordinate === 60 || coordinate === 80 || coordinate === 100 || coordinate === 120 || coordinate === 140 || coordinate === 160 || coordinate === 180 || coordinate === 200 || coordinate === 220 || coordinate === 240 || coordinate === 260 || coordinate === 280 || coordinate === 300 || coordinate === 320 || coordinate === 340 || coordinate === 360){
         caseCoordinate = 599;
     } //left column
 
-    if( coordinate === 39 || coordinate === 59 || coordinate === 79 || coordinate === 99 || coordinate === 119 || coordinate === 139 || coordinate === 159 || coordinate === 179 || coordinate === 199 || coordinate === 219 || coordinate === 239 || coordinate === 259 || coordinate === 279 || coordinate === 299 || coordinate === 319 || coordinate === 339 || coordinate === 359 || coordinate === 379){
+    if(coordinate === 39 || coordinate === 59 || coordinate === 79 || coordinate === 99 || coordinate === 119 || coordinate === 139 || coordinate === 159 || coordinate === 179 || coordinate === 199 || coordinate === 219 || coordinate === 239 || coordinate === 259 || coordinate === 279 || coordinate === 299 || coordinate === 319 || coordinate === 339 || coordinate === 359 || coordinate === 379){
         caseCoordinate = 499;
     } //right column
 
-    console.log("caseAfterIf: " + caseCoordinate);
-
-    //********SET'S caseCoordinate ALWAYS TO 599*******************
+    if(caseCoordinate <= 399 && caseCoordinate >= 381){
+        caseCoordinate = 699;
+    } //bottom row
 
     switch(caseCoordinate){
 
@@ -462,7 +475,7 @@ function clickedDiv(coordinate){
             }//top row
             break;
 
-        case caseCoordinate <= 399 && caseCoordinate >= 381:
+        case 699:
             if (left === "red" || right === "red" || top === "red"){
                 valid = true;
             }//bottom row
@@ -476,14 +489,129 @@ function clickedDiv(coordinate){
 
     }
 
-    console.log("vaild: " + valid)
-
     if(document.getElementById(coordinate).style.backgroundColor === "red"){
         window.alert("This field is already yours!");
     } else if(valid === true){
         document.getElementById(coordinate).style.backgroundColor = "red";
+        nextround = true;
     } else{
         window.alert("You must attack a field in your direct neighborhood!");
     }
+
+    if(nextround){
+        document.getElementById("turn").innerHTML = "Blau";
+    }
+
+    count();
+
+}
+
+function playerBlue(coordinate){
+
+    // Player2 === blue background
+    
+    let nextround = false;
+
+    let left = "";
+    let top = "";
+    let right = "";
+    let bottom = "";
+    let caseCoordinate = coordinate;
+
+    if ((coordinate-1) >= 0){
+        left = document.getElementById(coordinate-1).style.backgroundColor;
+    }
+    if((coordinate - 20) >= 0){
+        top = document.getElementById(coordinate-20).style.backgroundColor;
+    }
+    if((coordinate + 1) <= 399){
+        right = document.getElementById(coordinate+1).style.backgroundColor;
+    }
+    if((coordinate + 20) <= 399){
+        bottom = document.getElementById(coordinate+20).style.backgroundColor;
+    }
+
+    let valid = false;
+
+    if(coordinate === 20 || coordinate === 40 || coordinate === 60 || coordinate === 80 || coordinate === 100 || coordinate === 120 || coordinate === 140 || coordinate === 160 || coordinate === 180 || coordinate === 200 || coordinate === 220 || coordinate === 240 || coordinate === 260 || coordinate === 280 || coordinate === 300 || coordinate === 320 || coordinate === 340 || coordinate === 360){
+        caseCoordinate = 599;
+    } //left column
+
+    if(coordinate === 39 || coordinate === 59 || coordinate === 79 || coordinate === 99 || coordinate === 119 || coordinate === 139 || coordinate === 159 || coordinate === 179 || coordinate === 199 || coordinate === 219 || coordinate === 239 || coordinate === 259 || coordinate === 279 || coordinate === 299 || coordinate === 319 || coordinate === 339 || coordinate === 359 || coordinate === 379){
+        caseCoordinate = 499;
+    } //right column
+
+    if(caseCoordinate <= 399 && caseCoordinate >= 381){
+        caseCoordinate = 699;
+    } //bottom row
+
+    switch(caseCoordinate){
+
+        case 599:
+            if(right === "blue" || top === "blue" || bottom === "blue"){
+                valid = true;
+            } //left column
+            break;
+
+        case 499:
+            if (left === "blue" || top === "blue" || bottom === "blue"){
+                valid = true;
+            }//right column
+            break;
+
+        case caseCoordinate <= 19:
+            if (left === "blue" || right === "blue" || bottom === "blue"){
+                valid = true;
+            }//top row
+            break;
+
+        case 699:
+            if (left === "blue" || right === "blue" || top === "blue"){
+                valid = true;
+            }//bottom row
+
+        default:
+            if(left === "blue" || right === "blue" || top === "blue" || bottom === "blue"){
+                valid = true;
+            }
+            break;
+
+
+    }
+
+    if(document.getElementById(coordinate).style.backgroundColor === "blue"){
+        window.alert("This field is already yours!");
+    } else if(valid === true){
+        document.getElementById(coordinate).style.backgroundColor = "blue";
+        nextround = true;
+    } else{
+        window.alert("You must attack a field in your direct neighborhood!");
+    }
+
+    if(nextround){
+        document.getElementById("turn").innerHTML = "Rot";
+    }
+
+    count();
+
+}
+
+function count() {
+
+    let red = 0;
+    let blue = 0;
+    
+    for(let i = 0; i < 399; i++){
+
+        if(document.getElementsByClassName("mapCoordinate")[i].style.backgroundColor === "red"){
+            red++;
+        } else if (document.getElementsByClassName("mapCoordinate")[i].style.backgroundColor === "blue"){
+            blue++;
+        }
+        
+    }
+
+    document.getElementById("bluePoints").innerHTML = blue;
+    document.getElementById("redPoints").innerHTML = red;
 
 }
